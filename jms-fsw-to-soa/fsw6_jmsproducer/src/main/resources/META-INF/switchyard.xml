@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<switchyard xmlns="urn:switchyard-config:switchyard:1.0" xmlns:camel="urn:switchyard-component-camel:config:1.0" xmlns:quartz="urn:switchyard-component-camel-quartz:config:1.0" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="fileproducer" targetNamespace="urn:com.example.switchyard:fileproducer:1.0">
+  <sca:composite name="fileproducer" targetNamespace="urn:com.example.switchyard:fileproducer:1.0">
+    <sca:component name="CamelServiceRoute">
+      <camel:implementation.camel>
+        <camel:java class="com.example.switchyard.fileproducer.CamelServiceRoute"/>
+      </camel:implementation.camel>
+      <sca:service name="FooService">
+        <sca:interface.java interface="com.example.switchyard.fileproducer.Foo"/>
+      </sca:service>
+    </sca:component>
+    <sca:service name="FooService" promote="CamelServiceRoute/FooService">
+      <sca:interface.java interface="com.example.switchyard.fileproducer.Foo"/>
+      <quartz:binding.quartz name="fileproducer">
+        <operationSelector operationName="process"/>
+        <quartz:name>fileproducer</quartz:name>
+        <quartz:cron>30 * * * * ?</quartz:cron>
+      </quartz:binding.quartz>
+    </sca:service>
+  </sca:composite>
+</switchyard>

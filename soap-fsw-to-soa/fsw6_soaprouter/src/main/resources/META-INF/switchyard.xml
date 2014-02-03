@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<switchyard xmlns="urn:switchyard-config:switchyard:1.0" xmlns:bean="urn:switchyard-component-bean:config:1.0" xmlns:quartz="urn:switchyard-component-camel-quartz:config:1.0" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.0" name="soaprouter" targetNamespace="urn:com.example.switchyard:soaprouter:1.0">
+  <sca:composite name="soaprouter" targetNamespace="urn:com.example.switchyard:soaprouter:1.0">
+    <sca:component name="WriterBean">
+      <bean:implementation.bean class="com.example.switchyard.soaprouter.WriterBean"/>
+      <sca:service name="Writer">
+        <sca:interface.java interface="com.example.switchyard.soaprouter.Writer"/>
+      </sca:service>
+      <sca:reference name="Out">
+        <sca:interface.java interface="com.example.switchyard.soaprouter.Out"/>
+      </sca:reference>
+    </sca:component>
+    <sca:service name="Writer" promote="WriterBean/Writer">
+      <sca:interface.java interface="com.example.switchyard.soaprouter.Writer"/>
+      <quartz:binding.quartz name="soaprouter">
+        <operationSelector operationName="process"/>
+        <quartz:name>soaprouter</quartz:name>
+        <quartz:cron>30 * * * * ?</quartz:cron>
+      </quartz:binding.quartz>
+    </sca:service>
+    <sca:reference name="Out" multiplicity="0..1" promote="WriterBean/Out">
+      <sca:interface.java interface="com.example.switchyard.soaprouter.Out"/>
+      <soap:binding.soap name="soap1">
+        <soap:wsdl>http://127.0.0.1:8280/soa5_soapgateway-0.0.1-SNAPSHOT/ebws/ESBServiceSample/HelloWorldPubService?wsdl</soap:wsdl>
+        <soap:endpointAddress>http://127.0.0.1:8280/soa5_soapgateway-0.0.1-SNAPSHOT/ebws/ESBServiceSample/HelloWorldPubService</soap:endpointAddress>
+      </soap:binding.soap>
+    </sca:reference>
+  </sca:composite>
+</switchyard>

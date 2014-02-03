@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<jbossesb xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.1.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.1.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.1.xsd"
+    parameterReloadSecs="5">
+    <services>  
+        <service category="httpgateway" name="gate" description="Http Gateway Example" invmScope="GLOBAL">  
+            <listeners>  
+                <http-gateway name="Http" urlPattern="example/*"/>  
+            </listeners>
+            <actions>
+                <action name="dump" class="org.jboss.soa.esb.actions.SystemPrintln">
+                    <property name="printfull" value="true"/>
+                </action>
+
+     	        <action name="httprouter" class="org.jboss.soa.esb.actions.routing.http.HttpRouter">
+                    <property name="endpointUrl" value="http://localhost:8080/printer"></property>
+                    <property name="method" value="GET" ></property> <!-- Currently only supports GET or POST - easy to add more! -->
+                    <property name="responseType" value="STRING" ></property> <!-- Response should be set back on message as STRING or BYTES - default STRING -->
+                    <property name="headers">
+                        <header name="blah" value="blahval" ></header>
+                    </property>
+                </action>
+
+            </actions>  
+        </service>  
+    </services>  
+</jbossesb>  

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<jbossesb-deployment>
+  <depends>jboss.esb.quickstart.destination:service=Queue,name=quickstart_publish_as_webservice_Request_esb</depends>
+  <depends>jboss.esb.quickstart.destination:service=Queue,name=quickstart_publish_as_webservice_Request_esb_reply</depends>
+</jbossesb-deployment>
